@@ -2207,7 +2207,7 @@ requires-dist = [
     { name = "datasets", specifier = ">=3.0" },
     { name = "huggingface-hub", specifier = ">=0.24" },
     { name = "omniparser-core", editable = "packages/omniparser-core" },
-    { name = "openai", specifier = ">=1.50" },
+    { name = "openai", specifier = ">=2.41.1" },
     { name = "pillow", specifier = ">=10.0" },
     { name = "tqdm", specifier = ">=4.66" },
 ]
