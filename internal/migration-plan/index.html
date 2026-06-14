@@ -1,0 +1,1481 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Engineering-grade reorganization of microsoft/OmniParser (v2.0.1) into a Python uv-workspace monorepo.">
+      
+      
+      
+        <link rel="canonical" href="https://linuxerlv.github.io/omniparser-fork/internal/migration-plan/">
+      
+      
+        <link rel="prev" href="../../architecture/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Migration plan - OmniParser Monorepo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#migration-plan-omniparser-monorepo" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="OmniParser Monorepo" class="md-header__button md-logo" aria-label="OmniParser Monorepo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OmniParser Monorepo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Migration plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/linuxerlv/omniparser-fork" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    linuxerlv/omniparser-fork
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Internal
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="OmniParser Monorepo" class="md-nav__button md-logo" aria-label="OmniParser Monorepo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    OmniParser Monorepo
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/linuxerlv/omniparser-fork" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    linuxerlv/omniparser-fork
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internal
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Internal
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration plan
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#p0-foundation-configuration-only-no-code-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0 — Foundation (configuration only, no code migration)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p1-omniparser-core-rewrite-the-heaviest-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1 — omniparser-core rewrite (the heaviest phase)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="P1 — omniparser-core rewrite (the heaviest phase)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#design-decisions-locked-2026-06-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design decisions (locked, 2026-06-14)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-level-migration-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function-level migration table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mandatory-patches-apply-during-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mandatory patches (apply during migration)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tests-required-for-p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests required for P1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p2-omniparser-server-omniparser-client-parser-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2 — omniparser-server, omniparser-client, parser-demo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p3-omnitool-agent-omnitool-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P3 — omnitool-agent, omnitool-ui
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p4-omniparser-eval-infra-cicd-docs-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P4 — omniparser-eval, infra, CI/CD, docs, release
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="P4 — omniparser-eval, infra, CI/CD, docs, release">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#omniparser-eval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        omniparser-eval
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infra
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notebooks-assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notebooks &amp; assets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cicd-workflows-githubworkflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD workflows (.github/workflows/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-site-docsmkdocsyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation site (docs/mkdocs.yml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release-plumbing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release plumbing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#out-of-scope-intentional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Out of scope (intentional)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#p0-foundation-configuration-only-no-code-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0 — Foundation (configuration only, no code migration)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p1-omniparser-core-rewrite-the-heaviest-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1 — omniparser-core rewrite (the heaviest phase)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="P1 — omniparser-core rewrite (the heaviest phase)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#design-decisions-locked-2026-06-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design decisions (locked, 2026-06-14)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-level-migration-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function-level migration table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mandatory-patches-apply-during-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mandatory patches (apply during migration)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tests-required-for-p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests required for P1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p2-omniparser-server-omniparser-client-parser-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2 — omniparser-server, omniparser-client, parser-demo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p3-omnitool-agent-omnitool-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P3 — omnitool-agent, omnitool-ui
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p4-omniparser-eval-infra-cicd-docs-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P4 — omniparser-eval, infra, CI/CD, docs, release
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="P4 — omniparser-eval, infra, CI/CD, docs, release">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#omniparser-eval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        omniparser-eval
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infra
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notebooks-assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notebooks &amp; assets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cicd-workflows-githubworkflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD workflows (.github/workflows/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-site-docsmkdocsyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation site (docs/mkdocs.yml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release-plumbing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release plumbing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#out-of-scope-intentional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Out of scope (intentional)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="migration-plan-omniparser-monorepo">Migration Plan: OmniParser → Monorepo<a class="headerlink" href="#migration-plan-omniparser-monorepo" title="Permanent link">&para;</a></h1>
+<p>This is the source of truth for migrating microsoft/OmniParser
+(<code>b0d5c9f5701f7e2be4771872e6e928da77759df3</code>, v.2.0.1) into this monorepo.</p>
+<p>The plan is divided into five phases. Each phase is independently
+reviewable and produces a working state. P1-P4 may proceed in parallel
+across different developers if needed.</p>
+<hr />
+<h2 id="p0-foundation-configuration-only-no-code-migration">P0 — Foundation (configuration only, no code migration)<a class="headerlink" href="#p0-foundation-configuration-only-no-code-migration" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> workspace resolves with <code>uv sync</code>, pre-commit runs clean on all
+existing files, no source code is migrated yet.</p>
+<p><strong>Deliverables</strong>
+- Root <code>pyproject.toml</code> with <code>[tool.uv.workspace]</code> declaring 7 members
+- <code>LICENSE</code> (MIT), <code>NOTICE</code> (upstream attribution), <code>WEIGHTS_LICENSE.md</code>
+  (AGPL exposure guidance for downstream commercial users)
+- <code>ruff.toml</code> (shared lint), pyproject <code>[tool.mypy]</code> strict, <code>[tool.pytest]</code>
+  with <code>--import-mode=importlib</code>, <code>[tool.coverage]</code>, <code>[tool.towncrier]</code>
+- <code>.pre-commit-config.yaml</code> with ruff, mypy, nbstripout, gitleaks,
+  check-added-large-files, conventional-pre-commit
+- <code>.python-version</code>, completed <code>.gitignore</code>
+- Per-package skeleton: empty <code>pyproject.toml</code> + <code>src/&lt;pkg&gt;/__init__.py</code>
+  with <code>py.typed</code> marker</p>
+<p><strong>Acceptance</strong>
+- <code>uv sync --all-packages --dev</code> succeeds
+- <code>uv run ruff check .</code> returns 0 errors
+- <code>uv run pre-commit run --all-files</code> returns 0 errors</p>
+<hr />
+<h2 id="p1-omniparser-core-rewrite-the-heaviest-phase">P1 — <code>omniparser-core</code> rewrite (the heaviest phase)<a class="headerlink" href="#p1-omniparser-core-rewrite-the-heaviest-phase" title="Permanent link">&para;</a></h2>
+<p><strong>Source:</strong> <code>upstream/util/utils.py</code> (540 LOC), <code>upstream/util/box_annotator.py</code>
+(262 LOC), <code>upstream/util/omniparser.py</code> (32 LOC).</p>
+<h3 id="design-decisions-locked-2026-06-14">Design decisions (locked, 2026-06-14)<a class="headerlink" href="#design-decisions-locked-2026-06-14" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Plugin backends.</strong> <code>omniparser-core</code> ships with <code>Detector</code> and
+   <code>OcrBackend</code> Protocols. Concrete implementations
+   (<code>UltralyticsYoloDetector</code>, <code>EasyOcrBackend</code>, <code>PaddleOcrBackend</code>) live
+   in submodules guarded by optional extras:</li>
+<li><code>pip install omniparser-core</code> — zero ML deps, Protocol stubs only</li>
+<li><code>pip install omniparser-core[yolo]</code> — adds <code>ultralytics</code> (AGPL-3.0)</li>
+<li><code>pip install omniparser-core[easyocr]</code> — adds <code>easyocr</code></li>
+<li><code>pip install omniparser-core[paddleocr]</code> — adds <code>paddleocr</code></li>
+<li>
+<p><code>pip install omniparser-core[all]</code> — everything
+   This isolates the AGPL surface to users who explicitly opt in, and
+   makes core importable in CI without GPU/torch dependencies.</p>
+</li>
+<li>
+<p><strong>Breaking API rewrite.</strong> No back-compat shim for upstream's
+   <code>get_som_labeled_img(image_source, ...)</code> 13-arg signature. The new
+   surface is a single <code>Omniparser</code> class taking an <code>OmniparserConfig</code>,
+   and a single <code>parse(image: Image | ndarray | Path) -&gt; ParseResult</code>
+   method. <code>BOX_TRESHOLD</code> typo is fixed without a kwarg alias because
+   we're at <code>0.1.0.dev0</code>, not 1.0.</p>
+</li>
+<li>
+<p><strong><code>box_annotator.py</code> and <code>omniparser.py</code> migrate together</strong> with
+   <code>utils.py</code> in P1. P1 produces a complete, end-to-end-runnable
+   <code>omniparser-core</code> package; P2 (server/client/demo) can then import
+   it without further core work.</p>
+</li>
+</ol>
+<p><strong>Target tree:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>packages/omniparser-core/src/omniparser/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── __init__.py             # re-export Omniparser, ParseResult, OmniparserConfig
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── api.py                  # Omniparser facade class (replaces util/omniparser.py)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── detection.py            # YOLO loader and predict
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── captioning.py           # Florence-2 / BLIP-2 / Phi-3-V loaders and batch caption
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├── ocr.py                  # OcrBackend protocol + EasyOcrBackend, PaddleOcrBackend
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── geometry.py             # box_area, intersection_area, IoU, is_inside,
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│                           # int_box_area, remove_overlap_new
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>├── annotation.py           # BoxAnnotator + get_optimal_label_pos + annotate
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>├── pipeline.py             # parse_screen orchestration (no model state)
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>└── py.typed                # PEP 561 type marker
+</span></code></pre></div></p>
+<h3 id="function-level-migration-table">Function-level migration table<a class="headerlink" href="#function-level-migration-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Lines</th>
+<th>Target file</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>get_caption_model_processor</code></td>
+<td>utils.py:47-68</td>
+<td><code>captioning.py</code></td>
+<td>Add <code>@lru_cache(maxsize=4)</code> for processor reuse</td>
+</tr>
+<tr>
+<td><code>get_yolo_model</code></td>
+<td>utils.py:71-75</td>
+<td><code>detection.py</code></td>
+<td>Add type hint <code>-&gt; YOLO</code></td>
+</tr>
+<tr>
+<td><code>get_parsed_content_icon</code></td>
+<td>utils.py:78-122</td>
+<td><code>captioning.py</code></td>
+<td>Replace 5 <code>print()</code> with <code>logger.debug</code></td>
+</tr>
+<tr>
+<td><code>get_parsed_content_icon_phi3v</code></td>
+<td>utils.py:126-176</td>
+<td><code>captioning.py</code></td>
+<td>Mark <code># legacy</code>; gated by config</td>
+</tr>
+<tr>
+<td><code>remove_overlap</code> (old)</td>
+<td>utils.py:178-228</td>
+<td><strong>DELETE</strong></td>
+<td>Dead, only <code>remove_overlap_new</code> is called</td>
+</tr>
+<tr>
+<td><code>remove_overlap_new</code></td>
+<td>utils.py:231-309</td>
+<td><code>pipeline.py</code> (orchestration part) + <code>geometry.py</code> (IoU helpers)</td>
+<td>Split mixed concerns</td>
+</tr>
+<tr>
+<td><code>load_image</code></td>
+<td>utils.py:312-323</td>
+<td><strong>DELETE</strong></td>
+<td>Dead (GroundingDINO leftover, 0 callers)</td>
+</tr>
+<tr>
+<td><code>annotate</code></td>
+<td>utils.py:326-354</td>
+<td><code>annotation.py</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>predict</code></td>
+<td>utils.py:357-375</td>
+<td><strong>DELETE</strong></td>
+<td>Dead (HF GroundingDINO path, 0 callers)</td>
+</tr>
+<tr>
+<td><code>predict_yolo</code></td>
+<td>utils.py:378-399</td>
+<td><code>detection.py</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>int_box_area</code></td>
+<td>utils.py:401-405</td>
+<td><code>geometry.py</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>get_som_labeled_img</code></td>
+<td>utils.py:407-486</td>
+<td><code>pipeline.py</code> as <code>parse_screen</code></td>
+<td>Reduce 13-arg signature via <code>OmniparserConfig</code></td>
+</tr>
+<tr>
+<td><code>get_xywh</code></td>
+<td>utils.py:489-492</td>
+<td><code>ocr.py</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>get_xyxy</code></td>
+<td>utils.py:494-497</td>
+<td><code>ocr.py</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>get_xywh_yolo</code></td>
+<td>utils.py:499-502</td>
+<td><strong>DELETE</strong></td>
+<td>Dead (0 callers)</td>
+</tr>
+<tr>
+<td><code>check_ocr_box</code></td>
+<td>utils.py:504-540</td>
+<td><code>ocr.py</code></td>
+<td>Refactor <code>use_paddleocr</code> boolean → <code>OcrBackend</code> injection; remove <code>display_img</code> matplotlib branch (move to demo)</td>
+</tr>
+<tr>
+<td><code>BoxAnnotator</code> (class)</td>
+<td>box_annotator.py:10-163</td>
+<td><code>annotation.py</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>get_optimal_label_pos</code></td>
+<td>box_annotator.py:189-261</td>
+<td><code>annotation.py</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>box_area</code>, <code>intersection_area</code>, <code>IoU</code></td>
+<td>box_annotator.py:165-186</td>
+<td><code>geometry.py</code></td>
+<td><strong>Deduplicate</strong> with the same functions nested inside <code>utils.py:remove_overlap</code></td>
+</tr>
+<tr>
+<td><code>Omniparser</code> class</td>
+<td>omniparser.py:7-32</td>
+<td><code>api.py</code></td>
+<td>Rewrite: accept <code>Image | ndarray | Path</code>; base64 stays in server layer; remove <code>print()</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="mandatory-patches-apply-during-migration">Mandatory patches (apply during migration)<a class="headerlink" href="#mandatory-patches-apply-during-migration" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Description</th>
+<th>Locations</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>Eliminate import-time side effects</td>
+<td><code>utils.py:22-31</code> (<code>reader = easyocr.Reader(...)</code>, <code>paddle_ocr = PaddleOCR(...)</code>)</td>
+<td>Replace with <code>OcrBackend.lazy_init()</code>; allows tests to import without 500MB model load</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td>Device auto-detection</td>
+<td><code>utils.py:49</code>, <code>omniparser.py:10</code>, <code>gradio_demo.py:30</code>, <code>app_new.py</code></td>
+<td><code>cuda → mps → cpu</code> fallback</td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td>Replace <code>print()</code> with <code>logging</code></td>
+<td>88 occurrences across repo</td>
+<td>Single <code>_get_logger(__name__)</code> helper</td>
+</tr>
+<tr>
+<td><strong>D</strong></td>
+<td>Externalize hardcoded paths</td>
+<td><code>gradio_demo.py:15-16</code> (<code>weights/icon_detect/model.pt</code>, <code>weights/icon_caption_florence</code>)</td>
+<td><code>huggingface_hub.snapshot_download</code> + env var override</td>
+</tr>
+<tr>
+<td><strong>E</strong></td>
+<td>Replace 5 bare <code>except:</code></td>
+<td><code>utils.py:94</code>, <code>utils.py:294</code>, <code>vlm_agent.py:166</code>, <code>vlm_agent_with_orchestrator.py:229</code>, <code>eval/ss_pro_gpt4o_omniv2.py:202</code></td>
+<td>Specific exception classes, structured logging</td>
+</tr>
+<tr>
+<td><strong>F</strong></td>
+<td>Fix <code>BOX_TRESHOLD</code> typo</td>
+<td><code>utils.py:407</code>, <code>omniparser.py:30</code>, <code>gradio_demo.py:54</code></td>
+<td>Rename to <code>box_threshold</code> (kwargs back-compat alias for one minor version)</td>
+</tr>
+<tr>
+<td><strong>G</strong></td>
+<td>Replace <code>class Omniparser(object):</code></td>
+<td><code>omniparser.py:7</code></td>
+<td>Drop Python-2-style explicit <code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="tests-required-for-p1">Tests required for P1<a class="headerlink" href="#tests-required-for-p1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>tests/test_geometry.py</code>: pure-function tests for IoU, is_inside (no models)</li>
+<li><code>tests/test_pipeline.py</code>: smoke test using <code>MagicMock</code> detector + captioner +
+  <code>OcrBackend</code> to exercise <code>parse_screen</code> orchestration without weights</li>
+<li><code>tests/test_api.py</code>: integration smoke test gated by
+  <code>@pytest.mark.slow</code> — downloads weights via huggingface_hub and parses
+  one bundled sample screenshot</li>
+</ul>
+<p><strong>Acceptance</strong>
+- <code>uv run pytest packages/omniparser-core</code> passes; coverage ≥ 60%
+- <code>uv run mypy packages/omniparser-core/src</code> passes strict
+- <code>uv run python -c "import omniparser; print(omniparser.__version__)"</code>
+  completes in &lt; 500 ms (proves no import-time side effects remain)</p>
+<hr />
+<h2 id="p2-omniparser-server-omniparser-client-parser-demo">P2 — <code>omniparser-server</code>, <code>omniparser-client</code>, <code>parser-demo</code><a class="headerlink" href="#p2-omniparser-server-omniparser-client-parser-demo" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> the parser is reachable via HTTP from another process and from a
+local Gradio demo.</p>
+<p><strong>Sources &amp; targets</strong>
+- <code>upstream/omnitool/omniparserserver/omniparserserver.py</code> (52 LOC)
+  → <code>packages/omniparser-server/src/omniparser_server/{app.py,routes.py,settings.py}</code>
+  - Remove <code>sys.path.append(root_dir)</code> hack (no longer needed once core is
+    a real package)
+  - Settings via <code>pydantic-settings</code> instead of CLI argparse
+  - <code>uvicorn.run(..., reload=True)</code> is dev-only; production entry uses gunicorn
+- <code>upstream/omnitool/gradio/agent/llm_utils/omniparserclient.py</code> (40 LOC)
+  → <code>packages/omniparser-client/src/omniparser_client/__init__.py</code>
+  - Standalone tiny package (only <code>requests</code> dependency; no torch)
+  - Used by <code>omnitool-agent</code> and any third-party caller
+- <code>upstream/gradio_demo.py</code> (96 LOC)
+  → <code>apps/parser-demo/src/parser_demo/main.py</code>
+  - Lazy load models inside <code>if __name__ == "__main__"</code>
+  - <code>share=True</code> becomes opt-in via <code>--share</code> flag (was on by default)
+  - Drop the <code># import pdb; pdb.set_trace()</code> debug leftover</p>
+<p><strong>Acceptance</strong>
+- <code>uv run --package omniparser-server uvicorn ...</code> boots, <code>/probe/</code> returns 200
+- <code>omniparser-client</code> round-trips a sample image
+- <code>apps/parser-demo</code> Gradio UI renders, parses one image</p>
+<hr />
+<h2 id="p3-omnitool-agent-omnitool-ui">P3 — <code>omnitool-agent</code>, <code>omnitool-ui</code><a class="headerlink" href="#p3-omnitool-agent-omnitool-ui" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> the computer-use agent loop is a real Python package, with the UI
+reduced to a single Gradio entry point.</p>
+<p><strong>Sources &amp; targets</strong>
+- <code>upstream/omnitool/gradio/loop.py</code> (117 LOC) → <code>omnitool-agent/loop.py</code>
+- <code>upstream/omnitool/gradio/agent/{vlm_agent.py, vlm_agent_with_orchestrator.py, anthropic_agent.py}</code>
+  → <code>omnitool-agent/agents/</code>
+- <code>upstream/omnitool/gradio/agent/llm_utils/{oaiclient.py, groqclient.py, utils.py}</code>
+  → <code>omnitool-agent/llm_clients/</code>
+- <code>upstream/omnitool/gradio/executor/anthropic_executor.py</code> (123 LOC)
+  → <code>omnitool-agent/executors/anthropic.py</code>
+- <code>upstream/omnitool/gradio/tools/{base.py, collection.py, computer.py, screen_capture.py}</code>
+  → <code>omnitool-agent/tools/</code>
+- <code>upstream/omnitool/gradio/app_new.py</code> (707 LOC) → <code>apps/omnitool-ui/src/omnitool_ui/app.py</code>
+  (rename, drop <code>_new</code> suffix)</p>
+<p><strong>Deletions (during P3)</strong>
+- <code>upstream/omnitool/gradio/app.py</code> — superseded by <code>app_new.py</code>
+- <code>upstream/omnitool/gradio/app_streamlit.py</code> — duplicate UI, no maintenance ROI</p>
+<p><strong>Mandatory patches (apply during migration)</strong>
+- All bare <code>except:</code> blocks → typed exceptions (locations listed in P1 patch E)
+- All <code>print()</code> → <code>logging</code> (covered by patch C)</p>
+<p><strong>Acceptance</strong>
+- <code>uv run --package omnitool-ui python -m omnitool_ui</code> launches Gradio UI
+- <code>uv run mypy packages/omnitool-agent/src</code> passes
+  (apps/* is allowed to be relaxed)</p>
+<hr />
+<h2 id="p4-omniparser-eval-infra-cicd-docs-release">P4 — <code>omniparser-eval</code>, infra, CI/CD, docs, release<a class="headerlink" href="#p4-omniparser-eval-infra-cicd-docs-release" title="Permanent link">&para;</a></h2>
+<h3 id="omniparser-eval"><code>omniparser-eval</code><a class="headerlink" href="#omniparser-eval" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>upstream/eval/ss_pro_gpt4o_omniv2.py</code> (368 LOC)
+  → <code>packages/omniparser-eval/src/omniparser_eval/screenspot_pro.py</code></li>
+<li><strong>Fix broken import</strong> <code>from models.utils import ...</code> (line 21) — this
+  references a <code>models/</code> package that does not exist in upstream; rewrite
+  to <code>from omniparser import ...</code></li>
+<li><code>upstream/eval/logs_sspro_omniv2.json</code> (1.16 MB) — does NOT migrate;
+  publish as a GitHub release artifact instead</li>
+</ul>
+<h3 id="infra">Infra<a class="headerlink" href="#infra" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>upstream/omnitool/omnibox/</code> → <code>infra/omnibox/</code> (excluded from workspace)</li>
+<li><code>upstream/omnitool/omnibox/vm/win11setup/setupscripts/server/main.py</code>
+  → <code>infra/omnibox/agent-server/main.py</code> (not a workspace member)</li>
+</ul>
+<h3 id="notebooks-assets">Notebooks &amp; assets<a class="headerlink" href="#notebooks-assets" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>upstream/demo.ipynb</code> → <code>examples/notebooks/quickstart.ipynb</code>
+  (run <code>nbstripout</code> first; expect 287KB → ~30KB)</li>
+<li>Selected <code>imgs/*.png</code> smaller than 1MB → <code>docs/assets/</code></li>
+<li>Larger demo images → git-lfs or release artifacts</li>
+</ul>
+<h3 id="cicd-workflows-githubworkflows">CI/CD workflows (<code>.github/workflows/</code>)<a class="headerlink" href="#cicd-workflows-githubworkflows" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>ci.yml</code>: lint + typecheck + test matrix (py3.11/3.12/3.13 ×
+  ubuntu/macos/windows) + lockfile drift gate</li>
+<li><code>release.yml</code>: triggered on <code>v*</code> tag; <code>uv build</code> + Trusted Publishing
+  to PyPI (id-token: write, attestations: write)</li>
+<li><code>security.yml</code>: weekly <code>pip-audit</code> and <code>cyclonedx-py environment</code> SBOM</li>
+<li><code>docs.yml</code>: <code>mkdocs gh-deploy</code> on main</li>
+</ul>
+<h3 id="documentation-site-docsmkdocsyml">Documentation site (<code>docs/mkdocs.yml</code>)<a class="headerlink" href="#documentation-site-docsmkdocsyml" title="Permanent link">&para;</a></h3>
+<ul>
+<li>mkdocs-material with <code>mkdocstrings-python</code></li>
+<li>Auto-generate API docs from <code>omniparser-core</code> and <code>omniparser-client</code></li>
+<li>Hand-written guides: install, quickstart, deploy as service,
+  AGPL compliance</li>
+</ul>
+<h3 id="release-plumbing">Release plumbing<a class="headerlink" href="#release-plumbing" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Conventional Commits enforced via <code>conventional-pre-commit</code> (already in
+  <code>.pre-commit-config.yaml</code>)</li>
+<li><code>towncrier</code> configured at workspace root; news fragments in <code>changes/</code></li>
+<li>Per-package SemVer: <code>omniparser-core 0.1.0</code>, others 0.1.0 initially</li>
+<li>First public release after P4 acceptance: <code>omniparser-core 0.1.0</code> to PyPI</li>
+</ul>
+<p><strong>Acceptance</strong>
+- All three workflows pass on a representative PR
+- <code>mkdocs serve</code> renders the API of <code>omniparser-core</code> without errors
+- <code>uv build --package omniparser-core</code> produces a wheel installable
+  in a clean venv from the local file path
+- Trusted Publishing config registered on PyPI (manual one-time step,
+  documented)</p>
+<hr />
+<h2 id="out-of-scope-intentional">Out of scope (intentional)<a class="headerlink" href="#out-of-scope-intentional" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Training pipeline. OmniParser does not include training code; this
+  monorepo follows suit.</li>
+<li>License substitution for the YOLO weights (e.g. retraining a
+  permissively-licensed icon detector). That is a project for downstream
+  consumers; we document the AGPL implications in <code>WEIGHTS_LICENSE.md</code>
+  and leave the choice to them.</li>
+<li>Migration of the omnibox Win11 VM image build. The Dockerfile and
+  PowerShell setup scripts are preserved but stay in <code>infra/omnibox/</code>
+  and are not part of the Python build, lint, or test surface.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/linuxerlv/omniparser-fork" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://pypi.org/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.8 200.5c-7.7-30.9-22.3-54.2-53.4-54.2h-40.1v47.4c0 36.8-31.2 67.8-66.8 67.8H172.7c-29.2 0-53.4 25-53.4 54.3v101.8c0 29 25.2 46 53.4 54.3 33.8 9.9 66.3 11.7 106.8 0 26.9-7.8 53.4-23.5 53.4-54.3v-40.7H226.2v-13.6h160.2c31.1 0 42.6-21.7 53.4-54.2 11.2-33.5 10.7-65.7 0-108.6M286.2 444.7a20.4 20.4 0 1 1 0-40.7 20.4 20.4 0 1 1 0 40.7M167.8 248.1h106.8c29.7 0 53.4-24.5 53.4-54.3V91.9c0-29-24.4-50.7-53.4-55.6-35.8-5.9-74.7-5.6-106.8.1-45.2 8-53.4 24.7-53.4 55.6v40.7h106.9v13.6h-147c-31.1 0-58.3 18.7-66.8 54.2-9.8 40.7-10.2 66.1 0 108.6 7.6 31.6 25.7 54.2 56.8 54.2H101v-48.8c0-35.3 30.5-66.4 66.8-66.4m-6.6-183.4a20.4 20.4 0 1 1 0 40.8 20.4 20.4 0 1 1 0-40.8"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.top", "navigation.indexes", "search.highlight", "search.share", "search.suggest", "content.code.copy", "content.code.annotate", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
