@@ -2090,7 +2090,7 @@ dev = [
     { name = "pytest-cov", specifier = ">=5.0" },
     { name = "pytest-xdist", specifier = ">=3.6" },
     { name = "respx", specifier = ">=0.21" },
-    { name = "ruff", specifier = ">=0.15" },
+    { name = "ruff", specifier = ">=0.15.17" },
     { name = "towncrier", specifier = ">=24.8" },
 ]
 docs = [
@@ -2170,7 +2170,7 @@ yolo = [
 [package.metadata]
 requires-dist = [
     { name = "easyocr", marker = "extra == 'easyocr'", specifier = ">=1.7" },
-    { name = "einops", marker = "extra == 'caption'", specifier = ">=0.8" },
+    { name = "einops", marker = "extra == 'caption'", specifier = ">=0.8.2" },
     { name = "huggingface-hub", marker = "extra == 'caption'", specifier = ">=0.20" },
     { name = "numpy", specifier = ">=1.26,<3" },
     { name = "omniparser-core", extras = ["yolo", "caption", "easyocr", "paddleocr"], marker = "extra == 'all'", editable = "packages/omniparser-core" },
