@@ -23,6 +23,7 @@ env/
 .coverage.*
 htmlcov/
 coverage.xml
+requirements-audit.txt
 .tox/
 .nox/
 

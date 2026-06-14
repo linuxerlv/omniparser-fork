@@ -27,9 +27,9 @@ The upstream project is a high-impact research artifact but ships without packag
 | Docs                          | ✅ MkDocs Material site auto-deployed to GitHub Pages            |
 | Security                      | ✅ CodeQL (Python) + dependency-review on PRs                    |
 | Dependency updates            | ✅ Dependabot weekly grouped (`uv` + `github-actions`)           |
-| Release automation            | ✅ Tag `v*.*.*` → GitHub Release with built wheels               |
-| Branch protection             | 🟡 Pending (P4.6)                                                |
-| PyPI publishing               | ⏳ Not yet (publish on first tagged release)                     |
+| Release automation            | ✅ Tag `v*.*.*` → GitHub Release with built wheels (first tag: [`v0.1.0a1`](https://github.com/linuxerlv/omniparser-fork/releases/tag/v0.1.0a1)) |
+| Branch protection             | ✅ `main` requires 10 status checks, linear history, no force-pushes |
+| PyPI publishing               | ⏳ Trusted-publishing wired; gated to stable tags (skipped for pre-releases) |
 
 ## Packages
 
