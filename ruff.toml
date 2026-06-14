@@ -1,0 +1,83 @@
+# Shared ruff configuration for the OmniParser monorepo.
+# Member packages may override via their own [tool.ruff] tables in pyproject.toml.
+
+line-length = 100
+target-version = "py311"
+extend-exclude = [
+  "upstream",                  # Pinned reference clone — never lint.
+  "infra",                     # Non-Python infrastructure tree.
+  "examples/notebooks",        # Notebook outputs are not stable Python.
+  "**/.venv",
+  "**/build",
+  "**/dist",
+]
+
+[lint]
+# Rule set rationale: enable categories that catch real bugs and supply-chain
+# risks; ignore stylistic rules that conflict with formatter or are pedantic.
+select = [
+  "E", "W",       # pycodestyle
+  "F",            # Pyflakes (unused imports, undefined names)
+  "I",            # isort (import order)
+  "B",            # flake8-bugbear (real bug patterns)
+  "C4",           # flake8-comprehensions
+  "UP",           # pyupgrade
+  "SIM",          # flake8-simplify
+  "S",            # flake8-bandit (security)
+  "RUF",          # Ruff-specific
+  "PL",           # Pylint (a curated subset)
+  "PTH",          # flake8-use-pathlib
+  "TID",          # flake8-tidy-imports
+  "TC",           # flake8-type-checking (renamed from TCH in ruff 0.15)
+  "ARG",          # flake8-unused-arguments
+  "PERF",         # perflint
+  "FURB",         # refurb
+  "LOG",          # flake8-logging
+  "G",            # flake8-logging-format
+  "N",            # pep8-naming
+  "D",            # pydocstyle
+]
+ignore = [
+  "E501",         # Line length is enforced by the formatter.
+  "D100", "D104", # Don't require module/package docstrings everywhere.
+  "D102",         # Public method docstrings: covered by class-level + type hints.
+  "D105",         # Magic methods: rarely add information beyond the protocol.
+  "D107",         # __init__: documented at class level; type hints carry the rest.
+  "D203", "D213", # Conflicts with chosen Google style.
+  "PLR0913",      # Functions with many parameters (legitimate in pipelines).
+  "PLR2004",      # Magic numbers in comparisons (too noisy for ML code).
+  "S101",         # `assert` is fine inside tests; per-file-ignores handles it.
+  "TC003",        # Don't force stdlib imports under TYPE_CHECKING.
+  "PLC0415",      # `import` inside function: intentional for the plugin architecture
+                  # (lazy-load torch/transformers/cv2 only when needed; see patch A).
+]
+
+[lint.per-file-ignores]
+"**/tests/**/*" = ["S", "D", "ARG", "PLR", "ANN", "SLF001"]
+"**/__init__.py" = ["F401", "D104"]
+"benchmarks/**" = ["S", "D", "PLR"]
+"examples/**" = ["S", "D", "T20"]
+"scripts/**" = ["S", "T20"]
+
+[lint.pydocstyle]
+convention = "google"
+
+[lint.isort]
+known-first-party = [
+  "omniparser",
+  "omniparser_core",
+  "omniparser_client",
+  "omniparser_server",
+  "omniparser_eval",
+  "omnitool_agent",
+  "parser_demo",
+]
+
+[lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+docstring-code-line-length = 90

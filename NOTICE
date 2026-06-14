@@ -1,0 +1,74 @@
+# NOTICE
+
+This repository is a clean-room engineering reorganization of the OmniParser
+project originally published by Microsoft Research at:
+
+    https://github.com/microsoft/OmniParser
+
+Pinned upstream reference: commit `b0d5c9f5701f7e2be4771872e6e928da77759df3`
+(release tag `v.2.0.1`, dated 2025-09-12). The unmodified upstream source
+is preserved in the `upstream/` directory of this repository for traceability
+and is not part of the workspace build.
+
+## Upstream license
+
+The upstream OmniParser repository is distributed under the Creative Commons
+Attribution 4.0 International (CC-BY-4.0) license. The source text of that
+license is preserved in `upstream/LICENSE`.
+
+## Relicensing rationale
+
+CC-BY-4.0 is a license intended for creative works rather than software, and
+Creative Commons itself recommends against its use for code (see
+https://creativecommons.org/faq/#can-i-apply-a-creative-commons-license-to-software).
+This causes practical and legal ambiguity for downstream consumers.
+
+The code in `packages/`, `apps/`, `examples/`, `benchmarks/`, `docs/`,
+`scripts/`, and `infra/` of this monorepo is either:
+
+- newly authored work by the maintainers of this repository, or
+- a derivative work created from upstream OmniParser that has been
+  substantially rewritten (refactored module structure, type annotations,
+  error handling, logging, packaging, dependency injection of OCR/detection
+  backends, removal of dead code, and documentation).
+
+Per the attribution requirement of CC-BY-4.0 (Section 3.a.1), the upstream
+authors are credited below. Per Section 3.a.4, this NOTICE indicates that
+the original work has been modified.
+
+The reorganized code in this repository is licensed under the MIT License
+(see `LICENSE`).
+
+## Attribution
+
+The OmniParser model architecture, training methodology, and original
+reference implementation were authored by:
+
+- Yadong Lu, Jianwei Yang, Yelong Shen, Ahmed Awadallah, and other
+  contributors to microsoft/OmniParser.
+
+Cite the upstream paper:
+
+    @article{lu2024omniparser,
+      title={OmniParser for Pure Vision Based GUI Agent},
+      author={Lu, Yadong and Yang, Jianwei and Shen, Yelong and
+              Awadallah, Ahmed},
+      journal={arXiv preprint arXiv:2408.00203},
+      year={2024}
+    }
+
+## Model weights
+
+OmniParser model weights distributed by Microsoft on the Hugging Face Hub
+(`microsoft/OmniParser`, `microsoft/OmniParser-v2.0`) are NOT redistributed
+by this repository. They are downloaded by end users at runtime via the
+`huggingface_hub` client. Those weights carry their own licenses, including
+provisions inherited from upstream model families (notably AGPL-3.0 for the
+YOLO-derived `icon_detect` weights). See `WEIGHTS_LICENSE.md` for downstream
+implications.
+
+## Third-party components
+
+This repository's runtime dependencies are declared per package in each
+`pyproject.toml`. A consolidated SBOM is produced on every release and
+attached as a build artifact (CycloneDX format).

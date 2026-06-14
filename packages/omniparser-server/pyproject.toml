@@ -1,0 +1,45 @@
+[project]
+name = "omniparser-server"
+version = "0.1.0.dev0"
+description = "FastAPI inference service wrapping omniparser-core."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = "MIT"
+authors = [{ name = "OmniParser Monorepo Maintainers" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: FastAPI",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Internet :: WWW/HTTP",
+]
+dependencies = [
+  "omniparser-core",
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "pydantic>=2.10",
+  "pydantic-settings>=2.6",
+  "structlog>=24.4",
+]
+
+[project.optional-dependencies]
+prod = [
+  "gunicorn>=23.0",
+  "opentelemetry-api>=1.28",
+  "opentelemetry-sdk>=1.28",
+  "opentelemetry-instrumentation-fastapi>=0.49b0",
+  "prometheus-fastapi-instrumentator>=7.0",
+]
+
+[project.scripts]
+omniparser-server = "omniparser_server.cli:main"
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/omniparser_server"]

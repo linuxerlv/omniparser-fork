@@ -1,0 +1,30 @@
+[project]
+name = "omniparser-client"
+version = "0.1.0.dev0"
+description = "Lightweight HTTP client for the OmniParser inference server (no torch dependency)."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = "MIT"
+authors = [{ name = "OmniParser Monorepo Maintainers" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "httpx>=0.27",
+  "pydantic>=2.10",
+]
+
+[project.optional-dependencies]
+pillow = ["Pillow>=10.4"]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/omniparser_client"]

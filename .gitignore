@@ -1,0 +1,61 @@
+# Build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+wheels/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.tox/
+.nox/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project-specific
+weights/
+*.pt
+*.safetensors
+*.bin
+logs/
+*.log
+.env
+.env.local
+
+# uv
+uv.lock.local
+
+# Upstream is a tracked clone, but its build artifacts must not leak
+upstream/.venv/
+upstream/__pycache__/
+upstream/**/__pycache__/
+
+# Notebooks output
+*.ipynb_checkpoints/
+
+# Large eval logs (we will host these elsewhere)
+benchmarks/results/

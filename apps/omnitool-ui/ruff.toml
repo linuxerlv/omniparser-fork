@@ -1,0 +1,57 @@
+# Local ruff config for the omnitool-ui app.
+#
+# This subtree is the relocated and de-vendored Gradio agent UI from
+# `upstream/omnitool/gradio/`. The bulk of the code (~1500 LOC across
+# tools/, agent/, executor/, loop.py, app.py) is preserved with minimal
+# behavior changes; aggressive style/structural cleanup is out of scope
+# for the migration.
+#
+# We inherit the workspace-wide rule selection from the root `ruff.toml`,
+# but ignore stylistic and structural rules that would require rewriting
+# vendored code without behavior change. Real-bug rules (F-series except
+# F841 in vendored modules, B9xx exit codes, etc.) stay enabled.
+
+extend = "../../ruff.toml"
+
+[lint]
+extend-ignore = [
+  # ----------------- pydocstyle: vendored code lacks docstrings ----------------
+  "D101", "D102", "D103", "D105", "D107",  # missing-docstrings (already partially ignored at root)
+  "D200", "D205", "D210", "D212", "D415",  # docstring style nits
+  # ----------------- pylint structural complexity (vendor code is what it is) -
+  "PLR0911", "PLR0912", "PLR0915",         # too-many-{return,branches,statements}
+  "PLR1714",                                # repeated-equality-comparison
+  "PLW0603", "PLW2901", "PLW1508",         # global-statement / loop-redef / invalid-envvar-default
+  # ----------------- perf / refurb: behavior-equivalent rewrites are risky ----
+  "PERF102", "PERF401", "PERF403",
+  "FURB",                                   # whole refurb category
+  # ----------------- simplify: collapse if/with/isinstance is risky on vendor -
+  "SIM101", "SIM102", "SIM103", "SIM117", "SIM118",
+  # ----------------- bugbear: keep B9xx (exception flow), drop B007/B904 -----
+  "B007",                                   # unused-loop-control-variable (vendor pattern)
+  "B904",                                   # raise-without-from (vendored try/except)
+  # ----------------- ruff-specific cosmetic ----------------------------------
+  "RUF010", "RUF013", "RUF059",             # explicit-conv / implicit-optional / unused-unpacked
+  # ----------------- import / typing layout ---------------------------------
+  "TID252",                                 # ban-relative-imports (vendored relative imports)
+  "TC001", "TC002", "TC004",                # typing-only-* (vendored modules don't gate imports)
+  "I001",                                   # unsorted-imports (preserve upstream order in vendor)
+  # ----------------- whitespace / formatting that the formatter does not own --
+  "W291", "W292", "W293",                   # trailing/missing newlines (vendor sloppiness)
+  "E721",                                   # type-comparison (vendor uses `type(x) == list`)
+  # ----------------- security: known vendor patterns we do not change here ---
+  "S113",                                   # request-without-timeout (vendor: localhost screenshots)
+  # ----------------- argument hygiene (vendor signatures are ABI) ------------
+  "ARG001", "ARG002", "ARG004", "ARG005",
+  # ----------------- pep8-naming: vendor uses MIXED case constants -----------
+  "N801", "N802", "N803", "N806", "N815", "N816",
+  # ----------------- comprehension: vendor uses literal sets for membership --
+  "C405", "C408",
+  # ----------------- f-strings: vendor has empty f-strings as breadcrumbs ----
+  "F541",
+  # ----------------- unused locals: vendor often binds for documentation -----
+  "F841",
+  # ----------------- pathlib: vendor uses os.path.join -----------------------
+  "PTH118",
+  "PTH123",                                 # vendor uses bare open()
+]

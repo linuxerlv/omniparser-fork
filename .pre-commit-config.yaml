@@ -1,0 +1,84 @@
+# Pre-commit hooks for the OmniParser monorepo.
+# Install once per workstation: `uv run pre-commit install`.
+
+default_language_version:
+  python: python3.11
+
+default_stages: [pre-commit, pre-merge-commit]
+
+repos:
+  # ---------------------------------------------------------------------------
+  # File hygiene
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^upstream/
+      - id: end-of-file-fixer
+        exclude: ^upstream/
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=500"]                 # Block accidental weights commits.
+        exclude: ^(upstream/|examples/notebooks/)
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+        exclude: ^(upstream/|.*\.ps1$|.*\.bat$)
+
+  # ---------------------------------------------------------------------------
+  # Lint + format (ruff replaces black, isort, flake8, pyupgrade, etc.)
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.17
+    hooks:
+      - id: ruff-check
+        args: [--fix, --show-fixes]
+        exclude: ^upstream/
+      - id: ruff-format
+        exclude: ^upstream/
+
+  # ---------------------------------------------------------------------------
+  # Type checking (strict on packages, relaxed on apps)
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.20.2
+    hooks:
+      - id: mypy
+        files: ^(packages|apps)/[^/]+/src/
+        exclude: ^upstream/
+        additional_dependencies:
+          - pydantic>=2.10
+          - types-requests
+          - types-PyYAML
+
+  # ---------------------------------------------------------------------------
+  # Notebook hygiene — strip outputs so demo.ipynb does not bloat the diff.
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.7.1
+    hooks:
+      - id: nbstripout
+        files: \.ipynb$
+        exclude: ^upstream/
+
+  # ---------------------------------------------------------------------------
+  # Secret scanning
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+        exclude: ^upstream/
+
+  # ---------------------------------------------------------------------------
+  # Conventional commits enforcement (informational; can be required in CI).
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.6.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert]
