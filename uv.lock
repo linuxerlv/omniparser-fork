@@ -2195,16 +2195,20 @@ version = "0.1.0.dev0"
 source = { editable = "packages/omniparser-eval" }
 dependencies = [
     { name = "datasets" },
+    { name = "huggingface-hub" },
     { name = "omniparser-core" },
     { name = "openai" },
+    { name = "pillow" },
     { name = "tqdm" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "datasets", specifier = ">=3.0" },
+    { name = "huggingface-hub", specifier = ">=0.24" },
     { name = "omniparser-core", editable = "packages/omniparser-core" },
     { name = "openai", specifier = ">=1.50" },
+    { name = "pillow", specifier = ">=10.0" },
     { name = "tqdm", specifier = ">=4.66" },
 ]
 
