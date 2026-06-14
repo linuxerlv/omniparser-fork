@@ -1,6 +1,6 @@
 [project]
 name = "omnitool-ui"
-version = "0.1.0.dev0"
+version = "0.1.0a1"
 description = "Gradio agent UI driving omnitool-agent."
 readme = "README.md"
 requires-python = ">=3.11,<3.13"

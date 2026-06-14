@@ -1,6 +1,6 @@
 [project]
 name = "omniparser-client"
-version = "0.1.0.dev0"
+version = "0.1.0a1"
 description = "Lightweight HTTP client for the OmniParser inference server (no torch dependency)."
 readme = "README.md"
 requires-python = ">=3.11,<3.13"

@@ -1,6 +1,6 @@
 [project]
 name = "omniparser-core"
-version = "0.1.0.dev0"
+version = "0.1.0a1"
 description = "Pure inference library: pluggable detector + caption + OCR backends with IoU dedup pipeline."
 readme = "README.md"
 requires-python = ">=3.11,<3.13"

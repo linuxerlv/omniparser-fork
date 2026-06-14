@@ -1,6 +1,6 @@
 [project]
 name = "omniparser-eval"
-version = "0.1.0.dev0"
+version = "0.1.0a1"
 description = "Benchmark harnesses (ScreenSpot-Pro, etc.) for OmniParser."
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
