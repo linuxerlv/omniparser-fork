@@ -40,10 +40,10 @@ jobs:
         run: uv sync --frozen --all-packages --group dev
 
       - name: ruff check
-        run: uv run ruff check
+        run: uv run --no-sync ruff check
 
       - name: ruff format --check
-        run: uv run ruff format --check
+        run: uv run --no-sync ruff format --check
 
   typecheck:
     name: mypy --strict
@@ -66,7 +66,7 @@ jobs:
 
       - name: mypy --strict (all package src trees)
         run: |
-          uv run mypy \
+          uv run --no-sync mypy \
             packages/omniparser-core/src \
             packages/omniparser-client/src \
             packages/omniparser-server/src \
@@ -98,7 +98,7 @@ jobs:
         run: uv sync --frozen --all-packages --group dev --python ${{ matrix.python }}
 
       - name: pytest (no slow, no network)
-        run: uv run pytest -q --no-header
+        run: uv run --no-sync pytest -q --no-header
 
   build:
     name: build wheels

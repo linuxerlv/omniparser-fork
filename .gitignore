@@ -63,3 +63,7 @@ benchmarks/results/
 # Internal staging area for files queued for later phases (do not commit)
 .github/.staged/
 
+
+# mkdocs build output
+site/
+
