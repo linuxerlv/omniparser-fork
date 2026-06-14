@@ -88,6 +88,12 @@ filterwarnings = [
   "error",
   "ignore::DeprecationWarning:torch.*",
   "ignore::DeprecationWarning:transformers.*",
+  # pytest 9 promotes ResourceWarning unraisables to ExceptionGroup failures
+  # at session teardown (pytest-dev/pytest issue 12164 family). Third-party
+  # test deps (respx/httpx/asyncio) leak sockets/event loops on py3.11 + Linux/
+  # Windows that our test code does not own.
+  "ignore::pytest.PytestUnraisableExceptionWarning",
+  "ignore::ResourceWarning",
 ]
 
 [tool.coverage.run]
