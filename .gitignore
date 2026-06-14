@@ -59,3 +59,7 @@ upstream/**/__pycache__/
 
 # Large eval logs (we will host these elsewhere)
 benchmarks/results/
+
+# Internal staging area for files queued for later phases (do not commit)
+.github/.staged/
+
