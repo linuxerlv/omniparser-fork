@@ -153,20 +153,32 @@ check_untyped_defs = true
 
 
 [tool.towncrier]
-package = "omniparser"
+# Monorepo: no single top-level package to import for `__version__`. Per the
+# towncrier "Multiple Projects Share One Config" guidance, leave `package`
+# and `name` empty and pin the version here. Bump `version` at release time
+# (or pass `--version` on the CLI to override). All seven workspace packages
+# share a single version line, so one config row suffices.
+package = ""
+name = ""
+version = "0.1.0a1"
+
+directory = "changes.d"
 filename = "CHANGELOG.md"
-directory = "changes"
-issue_format = "[#{issue}](https://github.com/microsoft/OmniParser/issues/{issue})"
+# towncrier >= 23.11 auto-selects the bundled markdown template because
+# `filename` ends in `.md`; equivalent to `template = "towncrier:default.md"`.
+start_string = "## [Unreleased]\n"
 title_format = "## [{version}] - {project_date}"
+issue_format = "[#{issue}](https://github.com/linuxerlv/omniparser-fork/issues/{issue})"
+underlines = ["", "", ""]
 
 [[tool.towncrier.type]]
 directory = "feature"
-name = "Features"
+name = "Added"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "bugfix"
-name = "Bug Fixes"
+name = "Fixed"
 showcontent = true
 
 [[tool.towncrier.type]]
@@ -176,10 +188,10 @@ showcontent = true
 
 [[tool.towncrier.type]]
 directory = "removal"
-name = "Removals & Deprecations"
+name = "Removed"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "misc"
-name = "Miscellaneous"
-showcontent = true
+name = "Misc"
+showcontent = false
