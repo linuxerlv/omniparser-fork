@@ -2084,7 +2084,7 @@ dev = [
     { name = "hypothesis", specifier = ">=6.115" },
     { name = "mypy", specifier = ">=1.15" },
     { name = "pip-audit", specifier = ">=2.10" },
-    { name = "pre-commit", specifier = ">=4.0" },
+    { name = "pre-commit", specifier = ">=4.6.0" },
     { name = "pytest", specifier = ">=8.3" },
     { name = "pytest-asyncio", specifier = ">=0.23" },
     { name = "pytest-cov", specifier = ">=5.0" },
