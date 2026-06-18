@@ -44,7 +44,7 @@ omnitool-agent    = { workspace = true }
 # PEP 735 dependency groups, shared across the workspace via `uv sync --group`.
 [dependency-groups]
 dev = [
-  "pytest>=8.3",
+  "pytest>=9.1.0",
   "pytest-cov>=5.0",
   "pytest-asyncio>=0.23",
   "pytest-xdist>=3.6",
